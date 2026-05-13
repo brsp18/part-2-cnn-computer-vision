@@ -8,18 +8,18 @@ filter(kernel) across the image and looking for specific
 patterns like edges, lines, or shapes.
 
 For example:
-- First convolution layer detects simple patterns like edges and corners
-- Second convolution layer combines those to detect complex patterns like 
+1. First convolution layer detects simple patterns like edges and corners
+2. Second convolution layer combines those to detect complex patterns like 
   scratches, dents, and stains
 
 In simple terms — convolution is like a magnifying glass that scans the 
 entire image looking for specific features.
 
 In our model we used:
-- Conv Layer 1 → 32 filters → detects basic features
-- Conv Layer 2 → 64 filters → detects complex features
+1. Conv Layer 1 → 32 filters → detects basic features
+2. Conv Layer 2 → 64 filters → detects complex features
 
----
+
 
 ## Why is Pooling Used?
 
@@ -69,7 +69,6 @@ A regular network looks at each pixel individually and has no idea where it is i
 
 This concludes that CNNs are the standard choice for any image-based task.
 
----
 
 ## Model Summary
 1. The model takes an image of size 3 × 64 × 64 as input. The first convolution layer scans the image using 32 filters and detects basic features like edges and lines, keeping the image at 64 × 64. The first pooling layer then shrinks the image to 32 × 32 to reduce its size.
