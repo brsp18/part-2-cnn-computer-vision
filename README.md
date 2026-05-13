@@ -4,7 +4,7 @@
 ## What is Convolution?
 
 Convolution is the core operation in a CNN. It works by sliding a small 
-filter (also called a kernel) across the image and looking for specific 
+filter(kernel) across the image and looking for specific 
 patterns like edges, lines, or shapes.
 
 For example:
@@ -40,7 +40,6 @@ Example:
 - After Pool 1 : 32 × 32  (reduced by half)
 - After Pool 2 : 16 × 16  (reduced by half again)
 
----
 
 ## Why is ReLU Commonly Used in CNNs?
 
@@ -56,51 +55,40 @@ Why ReLU is popular:
 - Simple and fast to calculate
 - Helps the model learn non-linear patterns
 - Prevents the vanishing gradient problem
-  (which makes deep networks very slow to learn)
 - Works well in practice for most image tasks
 
 In our model ReLU is applied after every convolution and dense layer.
 
----
-
 ## Why are CNNs Better than Regular Neural Networks for Image Data?
 
-A regular neural network (like the one in Part 1) treats every pixel 
-as a separate input. For a 64×64 image that is 64 × 64 × 3 = 12,288 
-inputs — which is very large and loses all spatial information.
+A regular neural network flattens the image into a 1D list of pixels, which means it loses all spatial information — it has no idea which pixels are next to each other. This results in millions of parameters, one for each pixel, making it very slow and memory intensive. Because it cannot understand the structure of an image, it is unable to detect shapes, edges or textures, which leads to poor performance on image tasks.
 
-CNNs are better because:
+A CNN on the other hand keeps the 2D structure of the image intact, meaning it understands that nearby pixels are related to each other. It uses shared filters instead of individual weights for every pixel, which greatly reduces the number of parameters. This allows the CNN to detect meaningful visual patterns like edges, shapes and textures, making it excellent for image classification tasks like detecting scratches, dents and stains in our manufacturing dataset.
 
-| Feature | Regular Neural Network | CNN |
-|---|---|---|
-| Input | Flattens image to 1D | Keeps 2D structure of image |
-| Parameters | Millions (one per pixel) | Much fewer (shared filters) |
-| Spatial info | Lost completely | Preserved |
-| Pattern detection | Cannot detect shapes | Detects edges, shapes, textures |
-| Performance | Poor on images | Excellent on images |
+A regular network looks at each pixel individually and has no idea where it is in the image. A CNN understands that nearby pixels are related and uses that to detect meaningful visual patterns.
 
-In simple terms — a regular network looks at each pixel individually 
-and has no idea where it is in the image. A CNN understands that nearby 
-pixels are related and uses that to detect meaningful visual patterns.
-
-For our manufacturing defect dataset, CNNs can detect:
-- Scratch patterns (long thin lines)
-- Dent patterns (circular shapes)
-- Stain patterns (colored regions)
-
-This is why CNNs are the standard choice for any image-based task.
+This concludes that CNNs are the standard choice for any image-based task.
 
 ---
 
 ## Model Summary
+1. The model takes an image of size 3 × 64 × 64 as input. The first convolution layer scans the image using 32 filters and detects basic features like edges and lines, keeping the image at 64 × 64. The first pooling layer then shrinks the image to 32 × 32 to reduce its size.
+2. The second convolution layer uses 64 filters to detect more complex patterns like scratches and dents, and the second pooling layer shrinks it further to 16 × 16. After that the flatten layer converts the image into a long list of 16,384 numbers so it can be passed into the dense layer.
+3. The dense layer reduces this to 128 neurons where the model makes its final decision. The output layer then gives 4 scores, one for each class — dent, normal, scratch and stain — and whichever score is highest becomes the predicted label.
 
-| Layer | Type | Output Size |
-|---|---|---|
-| Input | Image | 3 × 64 × 64 |
-| Conv1 + ReLU | Convolution | 32 × 64 × 64 |
-| Pool1 | Max Pooling | 32 × 32 × 32 |
-| Conv2 + ReLU | Convolution | 64 × 32 × 32 |
-| Pool2 | Max Pooling | 64 × 16 × 16 |
-| Flatten | - | 16384 |
-| Dense + ReLU | Fully Connected | 128 |
-| Output | Fully Connected | 4 (classes) |
+
+### Business Use Case Mapping : Manufacturing 
+
+In high-speed manufacturing, manual inspection is slow, expensive, and prone to human error. By integrating a CNN model with conveyor-belt cameras, factories can automate quality control in real time.
+
+Key Benefits:
+
+Efficiency: Processes hundreds of items per minute, far outperforming human speed.
+
+Consistency: Eliminates fatigue and distraction, ensuring high accuracy 24/7.
+
+Cost Reduction: Lowers labor expenses by reducing the need for manual oversight.
+
+Quality Control: Catches defects like scratches or dents before they reach customers, protecting brand reputation.
+
+Smart Analytics: Automatically logs data to identify trends and fix root causes in the production line.
